@@ -6,7 +6,6 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useEffect } from "react";
 
 import useRentModal from "@/app/hooks/useRentModal";
 
@@ -49,7 +48,7 @@ const RentModal = () => {
       guestCount: 1,
       roomCount: 1,
       bathroomCount: 1,
-      imageSrc: [],
+      imageSrc: "",
       price: 1,
       title: "",
       description: "",
@@ -79,12 +78,6 @@ const RentModal = () => {
     });
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const router = require("next/router").default;
-    }
-  }, []);
-
   const onBack = () => {
     setStep((value) => value - 1);
   };
@@ -93,31 +86,28 @@ const RentModal = () => {
     setStep((value) => value + 1);
   };
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (step !== STEPS.PRICE) {
       return onNext();
     }
 
-    // Convert array of image URLs into a single string
-    const imageSrc = data.imageSrc.join(",");
-
     setIsLoading(true);
 
-    try {
-      // Send the data to the server
-      await axios.post("/api/listings", { ...data, imageSrc });
-
-      // Reset the form and update the step
-      toast.success("Listing created!");
-      router.refresh();
-      reset();
-      setStep(STEPS.CATEGORY);
-      rentModal.onClose();
-    } catch (error) {
-      toast.error("Something went wrong.");
-    } finally {
-      setIsLoading(false);
-    }
+    axios
+      .post("/api/listings", data)
+      .then(() => {
+        toast.success("Listing created!");
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch(() => {
+        toast.error("Something went wrong.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const actionLabel = useMemo(() => {
@@ -187,7 +177,7 @@ const RentModal = () => {
       <div className="flex flex-col gap-8">
         <Heading
           title="Share some basics about your place"
-          subtitle="What amenities do you have?"
+          subtitle="What amenitis do you have?"
         />
         <Counter
           onChange={(value) => setCustomValue("guestCount", value)}
