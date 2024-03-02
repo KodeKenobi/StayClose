@@ -1,65 +1,72 @@
-'use client';
-
-import Select from 'react-select'
-
-import useCountries from '@/app/hooks/useCountries';
-
-export type CountrySelectValue = {
-  flag: string;
-  label: string;
-  latlng: number[],
-  region: string;
-  value: string
-}
+import React, { useState } from "react";
+import Select from "react-select";
 
 interface CountrySelectProps {
-  value?: CountrySelectValue;
-  onChange: (value: CountrySelectValue) => void;
+  onChange: (value: string) => void; // Adjust onChange to accept a string
+  value: string | null;
 }
 
-const CountrySelect: React.FC<CountrySelectProps> = ({
-  value,
-  onChange
-}) => {
-  const { getAll } = useCountries();
+const CountrySelect: React.FC<CountrySelectProps> = ({ onChange, value }) => {
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [selectedArea, setSelectedArea] = useState<string | null>(null);
 
-  return ( 
+  // Define the data for South African cities and areas
+  const southAfricaData = [
+    {
+      city: "Johannesburg",
+      areas: ["Sandton", "Soweto", "Randburg"],
+    },
+    {
+      city: "Cape Town",
+      areas: ["City Bowl", "Southern Suburbs", "Northern Suburbs"],
+    },
+    // Add more cities and areas as needed
+  ];
+
+  const handleCityChange = (selectedOption: any) => {
+    setSelectedCity(selectedOption.value);
+    setSelectedArea(null); // Reset selected area when city changes
+    const locationValue = selectedOption.value; // Only city selected initially
+    onChange(locationValue); // Call the onChange function with the selected value
+  };
+
+  const handleAreaChange = (selectedOption: any) => {
+    setSelectedArea(selectedOption.value);
+    const locationValue = `${selectedCity}, ${selectedOption.value}`; // Concatenate city and area
+    onChange(locationValue); // Call the onChange function with the concatenated value
+  };
+
+  return (
     <div>
       <Select
-        placeholder="Anywhere"
-        isClearable
-        options={getAll()}
-        value={value}
-        onChange={(value) => onChange(value as CountrySelectValue)}
-        formatOptionLabel={(option: any) => (
-          <div className="
-          flex flex-row items-center gap-3">
-            <div>{option.flag}</div>
-            <div>
-              {option.label},
-              <span className="text-neutral-500 ml-1">
-                {option.region}
-              </span>
-            </div>
-          </div>
-        )}
-        classNames={{
-          control: () => 'p-3 border-2',
-          input: () => 'text-lg',
-          option: () => 'text-lg'
-        }}
-        theme={(theme) => ({
-          ...theme,
-          borderRadius: 6,
-          colors: {
-            ...theme.colors,
-            primary: 'black',
-            primary25: '#ffe4e6'
-          }
-        })}
+        placeholder="Select a city"
+        options={southAfricaData.map((city) => ({
+          value: city.city,
+          label: city.city,
+        }))}
+        value={
+          selectedCity ? { value: selectedCity, label: selectedCity } : null
+        }
+        onChange={handleCityChange}
       />
+      {selectedCity && (
+        <Select
+          placeholder="Select an area"
+          options={
+            southAfricaData
+              .find((city) => city.city === selectedCity)
+              ?.areas.map((area) => ({ value: area, label: area })) || []
+          }
+          value={
+            selectedArea ? { value: selectedArea, label: selectedArea } : null
+          }
+          onChange={handleAreaChange}
+          isDisabled={!selectedCity} // Disable area selection if no city is selected
+          className="mt-2"
+        />
+      )}
     </div>
-   );
-}
- 
+  );
+};
+
 export default CountrySelect;

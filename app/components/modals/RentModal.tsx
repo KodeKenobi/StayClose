@@ -164,9 +164,10 @@ const RentModal = () => {
           subtitle="Help guests find you!"
         />
         <CountrySelect
-          value={location}
           onChange={(value) => setCustomValue("location", value)}
+          value={location}
         />
+
         <Map center={location?.latlng} />
       </div>
     );
