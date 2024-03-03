@@ -38,9 +38,9 @@ export async function POST(request: Request) {
       roomCount,
       bathroomCount,
       guestCount,
-      locationValue: location,
+      locationValue: location.value,
       price: parseInt(price, 10),
-      user: { connect: { id: currentUser.id } }, // Connect the user to the listing
+      userId: currentUser.id,
     },
   });
 
