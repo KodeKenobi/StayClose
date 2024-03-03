@@ -11,6 +11,7 @@ import ToasterProvider from "@/app/providers/ToasterProvider";
 import "./globals.css";
 import ClientOnly from "./components/ClientOnly";
 import getCurrentUser from "./actions/getCurrentUser";
+import Footer from "./components/Footer";
 
 export const metadata = {
   title: "Stay Close",
@@ -40,6 +41,9 @@ export default async function RootLayout({
           <Navbar currentUser={currentUser} />
         </ClientOnly>
         <div className="pb-20 pt-28">{children}</div>
+        <ClientOnly>
+          <Footer />
+        </ClientOnly>
       </body>
     </html>
   );
