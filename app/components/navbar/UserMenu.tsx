@@ -38,6 +38,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
 
+  const onEditProfile = useCallback(() => {
+    router.push("/edit-profile"); // Update the route according to your application
+  }, [router]);
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
@@ -122,6 +126,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   label="Help center for reports"
                   onClick={() => router.push("/help")}
                 />
+                <MenuItem
+                  label="Edit Profile"
+                  onClick={() => router.push("/editProfile")}
+                />
+                <hr />
                 <hr />
                 <MenuItem label="Logout" onClick={() => signOut()} />
               </>
