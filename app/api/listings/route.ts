@@ -16,12 +16,26 @@ export async function POST(request: Request) {
     description,
     imageSrc,
     category,
+    amnety,
     roomCount,
     bathroomCount,
     guestCount,
     location,
     price,
   } = body;
+
+  // Validate if all necessary fields are provided
+  if (
+    !title ||
+    !description ||
+    !imageSrc ||
+    !category ||
+    !amnety ||
+    !location ||
+    !price
+  ) {
+    return NextResponse.error();
+  }
 
   Object.keys(body).forEach((value: any) => {
     if (!body[value]) {
@@ -35,6 +49,7 @@ export async function POST(request: Request) {
       description,
       imageSrc,
       category,
+      amnety,
       roomCount,
       bathroomCount,
       guestCount,

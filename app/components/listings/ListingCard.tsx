@@ -11,6 +11,7 @@ import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 import ClientOnly from "../ClientOnly";
+import { title } from "process";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -106,12 +107,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
         </div>
         <div className="font-semibold text-lg">
-          {data.locationValue} {location?.region}
+          {/* {data.locationValue} {location?.region} */}
+          {data.title}
         </div>
-
-        <div className="font-light text-neutral-500">
+        <div className="font-light text-neutral-500">{data.description}</div>
+        {/* <div className="font-light text-neutral-500">
           {reservationDate || data.category}
-        </div>
+        </div> */}
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">R{price}</div>
           {!reservation && <div className="font-light">night</div>}
