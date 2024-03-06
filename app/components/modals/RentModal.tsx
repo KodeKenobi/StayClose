@@ -54,7 +54,7 @@ const RentModal = () => {
       imageSrc: "",
       price: 1,
       title: "",
-      amnety: "",
+      amnety: [],
       description: "",
     },
   });
@@ -97,6 +97,15 @@ const RentModal = () => {
     }
 
     setIsLoading(true);
+
+    // Send array of amneties
+
+    // const amnetiesArray = amnety.split(",");
+
+    // const payload = {
+    //   ...data,
+    //   amnety: amnetiesArray,
+    // };
 
     axios
       .post("/api/listings", data)
@@ -228,8 +237,13 @@ const RentModal = () => {
         >
           {amneties.map((item) => (
             <AmnetiesInput
-              onClick={(amnety) => setCustomValue("amnety", amnety)}
-              selected={amnety === item.label}
+              onClick={(selected) =>
+                setCustomValue("amnety", [
+                  ...amnety,
+                  selected ? item.label : null,
+                ])
+              }
+              selected={amnety.includes(item.label)}
               label={item.label}
               icon={item.icon}
             />

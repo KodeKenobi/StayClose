@@ -129,12 +129,18 @@ const Amneties = () => {
   // Toggle the selected amneties so user can select multiple amneties
 
   const handleAmneties = (label: string) => {
-    const index = selectedAmneties.indexOf(label);
-    if (index !== -1) {
-      setSelectedAmneties(selectedAmneties.filter((item) => item !== label));
+    const isSelected = selectedAmneties.includes(label);
+    let updatedSelectedAmneties: string[];
+
+    if (isSelected) {
+      updatedSelectedAmneties = selectedAmneties.filter(
+        (item) => item !== label
+      );
     } else {
-      setSelectedAmneties([...selectedAmneties, label]);
+      updatedSelectedAmneties = [...selectedAmneties, label];
     }
+
+    setSelectedAmneties(updatedSelectedAmneties);
   };
 
   if (!isMainPage) {
