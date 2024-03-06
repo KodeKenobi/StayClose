@@ -248,7 +248,7 @@ const RentModal = () => {
             <>
               Show guests what your place looks like!{" "}
               <span style={{ color: "red", font: "bold" }}>
-                Please wait for your image to load before clicking "Next!!!!
+                Please wait for your image to load before clicking "Next"!!!!
               </span>
             </>
           }

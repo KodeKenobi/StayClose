@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
-
 import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
-
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
-
   if (!currentUser) {
     return NextResponse.error();
   }
-
   const body = await request.json();
   const {
     title,
@@ -24,25 +20,11 @@ export async function POST(request: Request) {
     price,
   } = body;
 
-  // Validate if all necessary fields are provided
-  if (
-    !title ||
-    !description ||
-    !imageSrc ||
-    !category ||
-    !amnety ||
-    !location ||
-    !price
-  ) {
-    return NextResponse.error();
-  }
-
   Object.keys(body).forEach((value: any) => {
     if (!body[value]) {
       NextResponse.error();
     }
   });
-
   const listing = await prisma.listing.create({
     data: {
       title,
@@ -58,6 +40,5 @@ export async function POST(request: Request) {
       userId: currentUser.id,
     },
   });
-
   return NextResponse.json(listing);
 }

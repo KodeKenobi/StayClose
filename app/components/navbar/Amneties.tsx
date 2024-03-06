@@ -15,6 +15,8 @@ import { HiSpeakerphone, HiOutlineSpeakerphone } from "react-icons/hi";
 import { MdSmokingRooms, MdFreeBreakfast } from "react-icons/md";
 import { BiDumbbell } from "react-icons/bi";
 import { IconType } from "react-icons";
+import { FaPaw } from "react-icons/fa";
+import { GiSpoon } from "react-icons/gi";
 import qs from "query-string";
 import AmnetiesBox from "../AmnetiesBox";
 import Container from "../Container";
@@ -32,6 +34,11 @@ export const amneties = [
     description: "Enjoy a relaxing time in our hot tub!",
   },
   {
+    label: "Pet Friendly",
+    icon: FaPaw,
+    description: "We welcome your furry friends!",
+  },
+  {
     label: "TV",
     icon: BiTv,
     description: "Watch your favorite shows and movies!",
@@ -40,6 +47,11 @@ export const amneties = [
     label: "Laundry Service",
     icon: MdLocalLaundryService,
     description: "Access to laundry service is provided!",
+  },
+  {
+    label: "Cleaning Services",
+    icon: GiSpoon,
+    description: "We ensure your comfort with cleaning services!",
   },
   {
     label: "Parking",
@@ -128,11 +140,6 @@ const Amneties = () => {
   if (!isMainPage) {
     return null;
   }
-  console.log(selectedAmneties);
-
-  const handlePush = (url: string) => {
-    router.push(url);
-  };
 
   const handleQueryParams = (updatedQuery: any) => {
     const url = qs.stringifyUrl(
@@ -145,14 +152,8 @@ const Amneties = () => {
     return url;
   };
 
-  const updateQueryParams = () => {
-    if (params !== null) {
-      const updatedQuery = new URLSearchParams(params.toString());
-      updatedQuery.delete("amnety");
-      selectedAmneties.forEach((label) => updatedQuery.append("amnety", label));
-      const url = handleQueryParams(updatedQuery);
-      handlePush(url);
-    }
+  const handlePush = (url: string) => {
+    // Use next/router to push the URL
   };
 
   return (
@@ -173,9 +174,20 @@ const Amneties = () => {
             label={item.label}
             icon={item.icon}
             selected={selectedAmneties.includes(item.label)}
-            onClick={(label) => {
-              handleAmneties(label);
-              updateQueryParams();
+            onClick={() => {
+              handleAmneties(item.label);
+              const updatedQuery: any = { ...params };
+              if (selectedAmneties.includes(item.label)) {
+                updatedQuery.delete("amnety");
+              } else {
+                updatedQuery.delete("amnety");
+                selectedAmneties.forEach((label) =>
+                  updatedQuery.append("amnety", label)
+                );
+                updatedQuery.append("amnety", item.label);
+              }
+              const url = handleQueryParams(updatedQuery);
+              handlePush(url);
             }}
           />
         ))}
