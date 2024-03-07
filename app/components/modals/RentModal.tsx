@@ -228,7 +228,7 @@ const RentModal = () => {
         >
           {amneties.map((item) => (
             <AmnetiesInput
-              key={item.label} // Add a unique key prop here
+              key={item.label}
               onClick={(selected) =>
                 setCustomValue("amnety", [
                   ...amnety,
