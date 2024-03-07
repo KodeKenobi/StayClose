@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import getCurrentLandlord from "@/app/actions/getCurrentLandlord";
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
+  const currentLandlord = await getCurrentLandlord();
   if (!currentUser) {
+    return NextResponse.error();
+  }
+  if (!currentLandlord) {
     return NextResponse.error();
   }
   const body = await request.json();
@@ -38,6 +43,7 @@ export async function POST(request: Request) {
       locationValue: location.value,
       price: parseInt(price, 10),
       userId: currentUser.id,
+      landlordId: currentLandlord.id,
     },
   });
   return NextResponse.json(listing);

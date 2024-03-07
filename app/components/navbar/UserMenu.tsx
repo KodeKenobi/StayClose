@@ -8,21 +8,32 @@ import { useRouter } from "next/navigation";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useRentModal from "@/app/hooks/useRentModal";
-import { SafeUser } from "@/app/types";
+import useLandlordLoginModal from "@/app/hooks/useLandlordLoginModal";
+import useLandlordRentModal from "@/app/hooks/useLandlordRentModal";
+import useLandlordRegisterModal from "@/app/hooks/useLandlordRegisterModal";
+import { SafeUser, SafeLandlord } from "@/app/types";
 
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
+import Menu from "react-select/dist/declarations/src/components/Menu";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
+  currentLandlord?: SafeLandlord | null;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
+const UserMenu: React.FC<UserMenuProps> = ({
+  currentUser,
+  currentLandlord,
+}) => {
   const router = useRouter();
 
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
+  const landlordLoginModal = useLandlordLoginModal();
+  const landlordRentModal = useLandlordRentModal();
+  const landlordRegisterModal = useLandlordRegisterModal();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,6 +52,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const onEditProfile = useCallback(() => {
     router.push("/edit-profile"); // Update the route according to your application
   }, [router]);
+
+  const onLandlordLogin = useCallback(() => {
+    if (!currentLandlord) {
+      return landlordLoginModal.onOpen();
+    }
+
+    landlordRentModal.onOpen();
+  }, [currentLandlord, landlordLoginModal, landlordRentModal]);
 
   return (
     <div className="relative">
@@ -120,7 +139,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
                   label="My properties"
                   onClick={() => router.push("/properties")}
                 />
-                <MenuItem label="Host your home" onClick={rentModal.onOpen} />
+                <MenuItem
+                  label="Host your home"
+                  onClick={landlordRentModal.onOpen}
+                />
                 <hr />
                 <MenuItem
                   label="Help center for reports"
@@ -138,6 +160,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               <>
                 <MenuItem label="Login" onClick={loginModal.onOpen} />
                 <MenuItem label="Sign up" onClick={registerModal.onOpen} />
+                {/* <hr />
+                <MenuItem
+                  label="Login as landlord"
+                  onClick={landlordLoginModal.onOpen}
+                /> */}
               </>
             )}
           </div>

@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
-import useRentModal from "@/app/hooks/useRentModal";
+import useLandlordRentModal from "@/app/hooks/useRentModal";
 
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
@@ -32,7 +32,7 @@ enum STEPS {
 
 const RentModal = () => {
   const router = useRouter();
-  const rentModal = useRentModal();
+  const rentModal = useLandlordRentModal();
 
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(STEPS.CATEGORY);
@@ -72,6 +72,7 @@ const RentModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
+    // [location]
     []
   );
 
@@ -228,7 +229,6 @@ const RentModal = () => {
         >
           {amneties.map((item) => (
             <AmnetiesInput
-              key={item.label} // Add a unique key prop here
               onClick={(selected) =>
                 setCustomValue("amnety", [
                   ...amnety,
@@ -253,8 +253,8 @@ const RentModal = () => {
           subtitle={
             <>
               Show guests what your place looks like!{" "}
-              <span style={{ color: "red", fontWeight: "bold" }}>
-                Please wait for your image to load before clicking Next!!!!
+              <span style={{ color: "red", font: "bold" }}>
+                Please wait for your image to load before clicking "Next"!!!!
               </span>
             </>
           }
