@@ -72,7 +72,6 @@ const RentModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
-    // [location]
     []
   );
 
@@ -255,8 +254,7 @@ const RentModal = () => {
             <>
               Show guests what your place looks like!{" "}
               <span style={{ color: "red", fontWeight: "bold" }}>
-                Please wait for your image to load before clicking
-                "Next&quot;!!!!
+                Please wait for your image to load before clicking Next!!!!
               </span>
             </>
           }
