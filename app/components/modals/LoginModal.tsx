@@ -8,6 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillGithub } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import { HiEye, HiEyeOff } from "react-icons/hi";
 
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
@@ -22,6 +23,7 @@ const LoginModal = () => {
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -74,12 +76,19 @@ const LoginModal = () => {
       <Input
         id="password"
         label="Password"
-        type="password"
+        type={showPassword ? "text" : "password"}
         disabled={isLoading}
         register={register}
         errors={errors}
         required
       />
+      <button
+        type="button"
+        onClick={() => setShowPassword((prev) => !prev)}
+        className="absolute inset-y-0 right-0 px-10 mt-[170px] flex items-center text-neutral-600"
+      >
+        {showPassword ? <HiEyeOff /> : <HiEye />}
+      </button>
     </div>
   );
 
