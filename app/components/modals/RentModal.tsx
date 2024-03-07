@@ -226,9 +226,9 @@ const RentModal = () => {
           overflow-y-auto
         "
         >
-          {amneties.map((item) => (
+          {amneties.map((item, index) => (
             <AmnetiesInput
-              key={item.label}
+              key={index}
               onClick={(selected) =>
                 setCustomValue("amnety", [
                   ...amnety,
