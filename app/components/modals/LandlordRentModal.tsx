@@ -72,7 +72,6 @@ const RentModal = () => {
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
-    // [location]
     []
   );
 
@@ -227,8 +226,9 @@ const RentModal = () => {
           overflow-y-auto
         "
         >
-          {amneties.map((item) => (
+          {amneties.map((item, index) => (
             <AmnetiesInput
+              key={index}
               onClick={(selected) =>
                 setCustomValue("amnety", [
                   ...amnety,
@@ -254,7 +254,7 @@ const RentModal = () => {
             <>
               Show guests what your place looks like!{" "}
               <span style={{ color: "red", font: "bold" }}>
-                Please wait for your image to load before clicking "Next"!!!!
+                Please wait for your image to load before clicking Next!!!!
               </span>
             </>
           }
