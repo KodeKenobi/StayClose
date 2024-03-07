@@ -10,15 +10,15 @@ import { useMemo, useState } from "react";
 import useRentModal from "@/app/hooks/useRentModal";
 
 import Modal from "./Modal";
-import Counter from "../inputs/Counter";
-import CategoryInput from "../inputs/CategoryInput";
-import AmnetiesInput from "../inputs/AmnetiesInput";
-import CountrySelect from "../inputs/CountrySelect";
-import { categories } from "../navbar/Categories";
-import { amneties } from "../navbar/Amneties";
-import ImageUpload from "../inputs/ImageUpload";
-import Input from "../inputs/Input";
-import Heading from "../Heading";
+import Counter from "../../components/inputs/Counter";
+import CategoryInput from "../../components/inputs/CategoryInput";
+import AmnetiesInput from "../../components/inputs/AmnetiesInput";
+import CountrySelect from "../../components/inputs/CountrySelect";
+import { categories } from "../../components/navbar/Categories";
+import { amneties } from "../../components/navbar/Amneties";
+import ImageUpload from "../../components/inputs/ImageUpload";
+import Input from "../../components/inputs/Input";
+import Heading from "../../components/Heading";
 
 enum STEPS {
   CATEGORY = 0,
@@ -69,11 +69,10 @@ const RentModal = () => {
 
   const Map = useMemo(
     () =>
-      dynamic(() => import("../Map"), {
+      dynamic(() => import("../../components/Map"), {
         ssr: false,
       }),
-    // [location]
-    []
+    [location]
   );
 
   const setCustomValue = (id: string, value: any) => {
@@ -229,7 +228,6 @@ const RentModal = () => {
         >
           {amneties.map((item) => (
             <AmnetiesInput
-              key={item.label} // Add a unique key prop here
               onClick={(selected) =>
                 setCustomValue("amnety", [
                   ...amnety,
@@ -254,9 +252,8 @@ const RentModal = () => {
           subtitle={
             <>
               Show guests what your place looks like!{" "}
-              <span style={{ color: "red", fontWeight: "bold" }}>
-                Please wait for your image to load before clicking
-                "Next&quot;!!!!
+              <span style={{ color: "red", font: "bold" }}>
+                Please wait for your image to load before clicking "Next"!!!!
               </span>
             </>
           }
