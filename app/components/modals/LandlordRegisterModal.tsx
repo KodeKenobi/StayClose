@@ -9,17 +9,17 @@ import { toast } from "react-hot-toast";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
-import useLoginModal from "@/app/hooks/useLoginModal";
-import useRegisterModal from "@/app/hooks/useRegisterModal";
+import useLandlordLoginModal from "@/app/hooks/useLandlordLoginModal";
+import useLandlordRegisterModal from "@/app/hooks/useLandlordRegisterModal";
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
 import Heading from "../Heading";
 import Button from "../Button";
 
-const RegisterModal = () => {
-  const registerModal = useRegisterModal();
-  const loginModal = useLoginModal();
+const LandlordRegisterModal = () => {
+  const registerModal = useLandlordLoginModal();
+  const loginModal = useLandlordRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State to track password visibility
 
@@ -42,7 +42,7 @@ const RegisterModal = () => {
     setIsLoading(true);
 
     axios
-      .post("/api/register", data)
+      .post("/api/landlord", data)
       .then(() => {
         toast.success("Registered!");
         registerModal.onClose();
@@ -63,7 +63,10 @@ const RegisterModal = () => {
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
-      <Heading title="Welcome to Stay Close" subtitle="Create an account!" />
+      <Heading
+        title="Welcome to Stay Close"
+        subtitle="Create an account as a landlord!"
+      />
       <Input
         id="email"
         label="Email"
@@ -185,4 +188,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LandlordRegisterModal;
