@@ -32,7 +32,7 @@ export async function POST(request: Request) {
       description,
       imageSrc,
       category,
-      amnety,
+      amnety: [amnety],
       roomCount,
       bathroomCount,
       guestCount,
