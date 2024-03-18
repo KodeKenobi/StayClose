@@ -12,8 +12,10 @@ import useRentModal from "@/app/hooks/useRentModal";
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
 import CategoryInput from "../inputs/CategoryInput";
+import AmnetiesInput from "../inputs/AmnetiesInput";
 import CountrySelect from "../inputs/CountrySelect";
 import { categories } from "../navbar/Categories";
+import { amneties } from "../navbar/Amneties";
 import ImageUpload from "../inputs/ImageUpload";
 import Input from "../inputs/Input";
 import Heading from "../Heading";
@@ -22,9 +24,10 @@ enum STEPS {
   CATEGORY = 0,
   LOCATION = 1,
   INFO = 2,
-  IMAGES = 3,
-  DESCRIPTION = 4,
-  PRICE = 5,
+  AMNETIES = 3,
+  IMAGES = 4,
+  DESCRIPTION = 5,
+  PRICE = 6,
 }
 
 const RentModal = () => {
@@ -51,6 +54,7 @@ const RentModal = () => {
       imageSrc: "",
       price: 1,
       title: "",
+      amnety: [],
       description: "",
     },
   });
@@ -61,13 +65,15 @@ const RentModal = () => {
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
+  const amnety = watch("amnety");
 
   const Map = useMemo(
     () =>
       dynamic(() => import("../Map"), {
         ssr: false,
       }),
-    [location]
+    // [location]
+    []
   );
 
   const setCustomValue = (id: string, value: any) => {
@@ -204,13 +210,57 @@ const RentModal = () => {
     );
   }
 
+  if (step === STEPS.AMNETIES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Which of these best describe amenities available?"
+          subtitle="Pick amenities"
+        />
+        <div
+          className="
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
+        >
+          {amneties.map((item) => (
+            <AmnetiesInput
+              key={item.label} // Add a unique key prop here
+              onClick={(selected) =>
+                setCustomValue("amnety", [
+                  ...amnety,
+                  selected ? item.label : null,
+                ])
+              }
+              selected={amnety.includes(item.label)}
+              label={item.label}
+              icon={item.icon}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (step === STEPS.IMAGES) {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
           title="Add a photo of your place"
-          subtitle="Show guests what your place looks like!"
+          subtitle={
+            <>
+              Show guests what your place looks like!{" "}
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Please wait for your image to load before clicking Next!!!!
+              </span>
+            </>
+          }
         />
+
         <ImageUpload
           onChange={(value) => setCustomValue("imageSrc", value)}
           value={imageSrc}
